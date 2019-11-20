@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using FluentValidation.AspNetCore;
 using HumanResources.Entities;
+using HumanResources.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +30,13 @@ namespace HumanResources
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<HumanResourceContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HumanResourceDatabaseConnection")));
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddFluentValidation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
