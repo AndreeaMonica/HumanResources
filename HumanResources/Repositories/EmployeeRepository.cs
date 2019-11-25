@@ -21,13 +21,9 @@ namespace HumanResources.Repositories
 
         public long AddEmployee(AddEmployeeRequest employee)
         {
-            var newEmployee = new Employees();
-            newEmployee.Name = employee.Name;
-            newEmployee.DateHired = employee.DateHired;
-            newEmployee.LastUpdate = employee.DateHired;
-            newEmployee.IsDeleted = false;
-
-            //var newEmployee = mapper.Map<Employees>(employee);
+            var newEmployee = mapper.Map<Employees>(employee);
+            newEmployee.DateHired = DateTime.Now;
+            newEmployee.LastUpdate = newEmployee.DateHired;
             context.Add(newEmployee);
             context.SaveChanges();
             return newEmployee.Id;
@@ -40,19 +36,24 @@ namespace HumanResources.Repositories
             return getEmployee;
         }
 
-        public bool SoftDelete(long id)
+        public bool DeleteEmployee(long id)
         {
             var employee = context.Employees.FirstOrDefault(x => x.Id == id);
+            if(employee == null)
+            {
+                throw new Exception("Failed to find the employee to delete");
+            }
             context.Remove(employee);
             context.SaveChanges();
             return true;
         }
 
-        public long UpdateEmployee(UpdateEmployeeRequest updateEmployee, long id)
+        public long UpdateEmployee(long id, UpdateEmployeeRequest updateEmployee)
         {
             var employee = context.Employees.FirstOrDefault(x => x.Id == id);
-            employee.LastUpdate = updateEmployee.LastUpdate;
+            
             employee.Name = updateEmployee.Name;
+            employee.LastUpdate = DateTime.Now;
             context.Update(employee);
             context.SaveChanges();
             return employee.Id;                

@@ -12,7 +12,9 @@ namespace HumanResources.Profiles
     {
         public HumanResourceProfile()
         {
-            this.CreateMap<Employees, GetEmployeeResponse>()
+            this.CreateMap<Employees, GetEmployeeResponse>()                
+                .ReverseMap();
+            this.CreateMap<Employees, AddEmployeeRequest>()
                 .ReverseMap();
         }
          

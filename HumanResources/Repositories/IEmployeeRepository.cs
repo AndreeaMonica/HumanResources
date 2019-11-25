@@ -10,8 +10,7 @@ namespace HumanResources.Repositories
     {
         long AddEmployee(AddEmployeeRequest employee);
         GetEmployeeResponse GetEmployee(long id);
-        bool SoftDelete(long id);
-        long UpdateEmployee(UpdateEmployeeRequest updateEmployee, long id);
-
+        bool DeleteEmployee(long id);
+        long UpdateEmployee(long id, UpdateEmployeeRequest updateEmployee);
     }
 }

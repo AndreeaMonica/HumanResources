@@ -37,14 +37,14 @@ namespace HumanResources.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateEmployee([FromRoute] long id, [FromBody] UpdateEmployeeRequest updateEmployee)
         {
-            var employee = employeeRepository.UpdateEmployee(updateEmployee,id);
+            var employee = employeeRepository.UpdateEmployee(id, updateEmployee);
             return Ok(employee);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult SoftDelete([FromRoute] long id)
+        public IActionResult DeleteEmployee([FromRoute] long id)
         {
-            var employee = employeeRepository.SoftDelete(id);
+            var employee = employeeRepository.DeleteEmployee(id);
             return Ok(employee);
         }
     }

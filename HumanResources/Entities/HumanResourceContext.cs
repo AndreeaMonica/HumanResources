@@ -16,19 +16,19 @@ namespace HumanResources.Entities
 
         public override int SaveChanges()
         {
-            UpdateSoftDeleteStatuses();
+            OverrideDelete();
             return base.SaveChanges();
         }
 
-        private void UpdateSoftDeleteStatuses() 
+        private void OverrideDelete() 
         {
             foreach(var entry in ChangeTracker.Entries<Employees>())
             {
                 switch (entry.State)
                 {
-                    case EntityState.Added:
-                        entry.CurrentValues["IsDeleted"] = false;
-                        break;
+                    //case EntityState.Added:
+                    //    entry.CurrentValues["IsDeleted"] = false;
+                    //    break;
                     case EntityState.Deleted:
                         entry.State = EntityState.Modified;
                         entry.CurrentValues["IsDeleted"] = true;
