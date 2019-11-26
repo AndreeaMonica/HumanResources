@@ -6,10 +6,6 @@ namespace HumanResources.Entities
 {
     public partial class HumanResourceContext : DbContext
     {
-        public HumanResourceContext()
-        {
-        }
-
         public HumanResourceContext(DbContextOptions<HumanResourceContext> options)
             : base(options)
         {
@@ -18,14 +14,38 @@ namespace HumanResources.Entities
         public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<HumanResources> HumanResources { get; set; }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{              
-        //}
+        public override int SaveChanges()
+        {
+            OverrideDelete();
+            return base.SaveChanges();
+        }
+
+        private void OverrideDelete() 
+        {
+            foreach(var entry in ChangeTracker.Entries<Employees>())
+            {
+                switch (entry.State)
+                {
+                    //case EntityState.Added:
+                    //    entry.CurrentValues["IsDeleted"] = false;
+                    //    break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["IsDeleted"] = true;
+                        break;
+                }
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employees>(entity =>
             {
+                base.OnModelCreating(modelBuilder);
+                modelBuilder.Entity<Employees>()
+                            .HasQueryFilter(m => !EF.Property<bool>(m,"IsDeleted"));
+
+
                 entity.Property(e => e.DateHired).HasColumnType("datetime");
 
                 entity.Property(e => e.LastUpdate).HasColumnType("datetime");
