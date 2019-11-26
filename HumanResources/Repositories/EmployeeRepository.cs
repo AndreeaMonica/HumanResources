@@ -23,7 +23,7 @@ namespace HumanResources.Repositories
         {
             var newEmployee = mapper.Map<Employees>(employee);
             newEmployee.DateHired = DateTime.Now;
-            newEmployee.LastUpdate = newEmployee.DateHired;
+            newEmployee.LastUpdate = DateTime.Now;
             context.Add(newEmployee);
             context.SaveChanges();
             return newEmployee.Id;
@@ -51,7 +51,6 @@ namespace HumanResources.Repositories
         public long UpdateEmployee(long id, UpdateEmployeeRequest updateEmployee)
         {
             var employee = context.Employees.FirstOrDefault(x => x.Id == id);
-            
             employee.Name = updateEmployee.Name;
             employee.LastUpdate = DateTime.Now;
             context.Update(employee);

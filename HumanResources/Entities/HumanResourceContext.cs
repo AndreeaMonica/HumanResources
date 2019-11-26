@@ -43,7 +43,7 @@ namespace HumanResources.Entities
             {
                 base.OnModelCreating(modelBuilder);
                 modelBuilder.Entity<Employees>()
-                            .HasQueryFilter(m => EF.Property<bool>(m,"IsDeleted")==false);
+                            .HasQueryFilter(m => !EF.Property<bool>(m,"IsDeleted"));
 
 
                 entity.Property(e => e.DateHired).HasColumnType("datetime");
