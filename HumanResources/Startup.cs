@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using HumanResources.Entities;
+using HumanResources.Models;
 using HumanResources.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,9 +36,14 @@ namespace HumanResources
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddTransient<IValidator<AddEmployeeRequest>, AddEmployeeRequestValidation>();
+            services.AddTransient<IValidator<UpdateEmployeeRequest>, UpdateEmployeeRequestValidation>();
+
+
             services.AddControllers();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddFluentValidation();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

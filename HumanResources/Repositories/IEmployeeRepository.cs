@@ -10,6 +10,7 @@ namespace HumanResources.Repositories
     {
         long AddEmployee(AddEmployeeRequest employee);
         GetEmployeeResponse GetEmployee(long id);
+        IEnumerable<GetEmployeeResponse> GetAllEmoployees();
         bool DeleteEmployee(long id);
         long UpdateEmployee(long id, UpdateEmployeeRequest updateEmployee);
     }

@@ -24,6 +24,7 @@ namespace HumanResources.Repositories
             var newEmployee = mapper.Map<Employees>(employee);
             newEmployee.DateHired = DateTime.Now;
             newEmployee.LastUpdate = DateTime.Now;
+
             context.Add(newEmployee);
             context.SaveChanges();
             return newEmployee.Id;
@@ -38,12 +39,12 @@ namespace HumanResources.Repositories
 
         public bool DeleteEmployee(long id)
         {
-            var employee = context.Employees.FirstOrDefault(x => x.Id == id);
-            if(employee == null)
+            var employeeId = context.Employees.FirstOrDefault(x => x.Id == id);
+            if(employeeId == null)
             {
-                throw new Exception("Failed to find the employee to delete");
+                return false;
             }
-            context.Remove(employee);
+            context.Remove(employeeId);
             context.SaveChanges();
             return true;
         }
@@ -51,11 +52,22 @@ namespace HumanResources.Repositories
         public long UpdateEmployee(long id, UpdateEmployeeRequest updateEmployee)
         {
             var employee = context.Employees.FirstOrDefault(x => x.Id == id);
+            if(employee == null)
+            {
+                return -1;
+            }
             employee.Name = updateEmployee.Name;
             employee.LastUpdate = DateTime.Now;
             context.Update(employee);
             context.SaveChanges();
             return employee.Id;                
+        }
+
+        public IEnumerable<GetEmployeeResponse> GetAllEmoployees()
+        {
+            var employees = context.Employees.ToList();            
+            var getEmployees = mapper.Map<IEnumerable<GetEmployeeResponse>>(employees);
+            return getEmployees;
         }
     }
 }
