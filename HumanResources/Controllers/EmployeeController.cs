@@ -39,6 +39,10 @@ namespace HumanResources.Controllers
         public IActionResult GetEmployeeById([FromRoute] long id)
         {
             var employee = employeeRepository.GetEmployee(id);
+            if(employee == null)
+            {
+                return NoContent();
+            }
             return Ok(employee);
         }
 
@@ -47,6 +51,10 @@ namespace HumanResources.Controllers
         {
             updateEmployeeValidator.ValidateAndThrow(updateEmployee);
             var employee = employeeRepository.UpdateEmployee(id, updateEmployee);
+            if(employee == -1)
+            {
+                return BadRequest("Employee Not Found. No Employee was updated");
+            }
             return Ok(employee);
         }
 
@@ -54,6 +62,10 @@ namespace HumanResources.Controllers
         public IActionResult DeleteEmployee([FromRoute] long id)
         {
             var employee = employeeRepository.DeleteEmployee(id);
+            if(employee == false)
+            {
+                return BadRequest("Employee Not Found. No Employee was deleted");
+            }
             return Ok(employee);
         }
 
@@ -61,6 +73,10 @@ namespace HumanResources.Controllers
         public IActionResult GetAllEmployees()
         {
             var employee = employeeRepository.GetAllEmoployees();
+            if(employee == null)
+            {
+                return NoContent();
+            }
             return Ok(employee);
         }
     }

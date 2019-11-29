@@ -33,10 +33,6 @@ namespace HumanResources.Repositories
         public GetEmployeeResponse GetEmployee(long id)
         {
             var employee = context.Employees.FirstOrDefault(x => x.Id == id);
-            if (employee == null)
-            {
-                throw new Exception("Failed to Get an Employee with this Id");
-            }
             var getEmployee = mapper.Map<GetEmployeeResponse>(employee);
             return getEmployee;
         }
@@ -46,7 +42,7 @@ namespace HumanResources.Repositories
             var employee = context.Employees.FirstOrDefault(x => x.Id == id);
             if(employee == null)
             {
-                throw new Exception("Failed to find the employee to Delete with this Id");
+                return false;
             }
             context.Remove(employee);
             context.SaveChanges();
@@ -58,7 +54,7 @@ namespace HumanResources.Repositories
             var employee = context.Employees.FirstOrDefault(x => x.Id == id);
             if(employee == null)
             {
-                throw new Exception("Failed to find the employee to Update with this Id");
+                return -1;
             }
             employee.Name = updateEmployee.Name;
             employee.LastUpdate = DateTime.Now;
@@ -69,11 +65,7 @@ namespace HumanResources.Repositories
 
         public IEnumerable<GetEmployeeResponse> GetAllEmoployees()
         {
-            var employees = context.Employees.ToList();
-            if (!employees.Any())
-            {
-                throw new Exception("No Employees found");
-            }
+            var employees = context.Employees.ToList();            
             var getEmployees = mapper.Map<IEnumerable<GetEmployeeResponse>>(employees);
             return getEmployees;
         }
