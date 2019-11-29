@@ -39,12 +39,12 @@ namespace HumanResources.Repositories
 
         public bool DeleteEmployee(long id)
         {
-            var employee = context.Employees.FirstOrDefault(x => x.Id == id);
-            if(employee == null)
+            var employeeId = context.Employees.FirstOrDefault(x => x.Id == id);
+            if(employeeId == null)
             {
                 return false;
             }
-            context.Remove(employee);
+            context.Remove(employeeId);
             context.SaveChanges();
             return true;
         }

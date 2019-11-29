@@ -31,53 +31,53 @@ namespace HumanResources.Controllers
         public IActionResult AddEmployee([FromBody] AddEmployeeRequest addEmployee)
         {
             addEmployeeValidator.ValidateAndThrow(addEmployee);
-            var employee = employeeRepository.AddEmployee(addEmployee);
-            return Ok(employee);
+            var employeeId = employeeRepository.AddEmployee(addEmployee);
+            return Ok(employeeId);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetEmployeeById([FromRoute] long id)
         {
-            var employee = employeeRepository.GetEmployee(id);
-            if(employee == null)
+            var getEmployee = employeeRepository.GetEmployee(id);
+            if(getEmployee == null)
             {
                 return NoContent();
             }
-            return Ok(employee);
+            return Ok(getEmployee);
         }
 
         [HttpPut("{id}")]
         public IActionResult UpdateEmployee([FromRoute] long id, [FromBody] UpdateEmployeeRequest updateEmployee)
         {
             updateEmployeeValidator.ValidateAndThrow(updateEmployee);
-            var employee = employeeRepository.UpdateEmployee(id, updateEmployee);
-            if(employee == -1)
+            var employeeId = employeeRepository.UpdateEmployee(id, updateEmployee);
+            if(employeeId == -1)
             {
                 return BadRequest("Employee Not Found. No Employee was updated");
             }
-            return Ok(employee);
+            return Ok(employeeId);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteEmployee([FromRoute] long id)
         {
-            var employee = employeeRepository.DeleteEmployee(id);
-            if(employee == false)
+            var isDeleted = employeeRepository.DeleteEmployee(id);
+            if(isDeleted == false)
             {
                 return BadRequest("Employee Not Found. No Employee was deleted");
             }
-            return Ok(employee);
+            return Ok(isDeleted);
         }
 
         [HttpGet]
         public IActionResult GetAllEmployees()
         {
-            var employee = employeeRepository.GetAllEmoployees();
-            if(employee == null)
+            var getAllEmployee = employeeRepository.GetAllEmoployees();
+            if(getAllEmployee == null)
             {
                 return NoContent();
             }
-            return Ok(employee);
+            return Ok(getAllEmployee);
         }
     }
 }
