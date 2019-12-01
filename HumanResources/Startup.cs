@@ -45,7 +45,7 @@ namespace HumanResources
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddFluentValidation();
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My API", Description = "DotNet Core Api 3 - with swagger" }); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Human Resources", Description = "Management employees" }); });
 
         }
 
@@ -69,7 +69,7 @@ namespace HumanResources
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HR V1");
                 c.RoutePrefix = string.Empty;
             });
         }
